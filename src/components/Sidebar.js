@@ -33,7 +33,7 @@ export default function Sidebar() {
             boxShadow="5px 5px 12px 0 rgba(0, 0, 0, 0.1)"
             w={navSize == "small" ? "75px" : "250px"}
             flexDir="column"
-            background="#d8eced"
+            // background="#d8eced"
             // justifyContent="space-between"
         >
             <Flex
@@ -74,7 +74,7 @@ export default function Sidebar() {
                     }}
                 /> */}
                 <NavItem navSize={navSize} icon={FiHome} title="Prediksi" description="This is the description for the dashboard." to="/"/>
-                <NavItem navSize={navSize} icon={FiCalendar} title="Pos Duga Air" to="/water-level"/>
+                <NavItem navSize={navSize} icon={FiCalendar} title="Pos Duga Air" to="/water-level" active={true}/>
                 <NavItem navSize={navSize} icon={FiUser} title="Pos Curah Hujan" to="rainfall" />
                 {/* <NavItem navSize={navSize} icon={IoPawOutline} title="Animals" /> */}
                 {/* <NavItem navSize={navSize} icon={FiDollarSign} title="Stocks" />
