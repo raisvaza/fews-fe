@@ -41,8 +41,14 @@ export default function LineChart({flexGrow, data, options}) {
         <Flex
             flexDir="column"
             alignItems="center"
-            flexGrow={flexGrow}
-            width={"50%"}
+            flexGrow={1}
+            // maxWidth="80%"
+            height={"400px"}
+            // width={"50%"}
+            // height="100%"
+            border="1px solid #EEEEEE"
+            borderRadius="5px"
+
         >
             {/* <Flex
             width="100vh">

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 
 export default function ChartDashboard({ title, data, options, filterOptions}) {
 
-    const [activeFilterOption, setActiveFilterOption] = useState("");
+    const [activeFilterOption, setActiveFilterOption] = useState("all");
     // const [filteredData, setFilteredData] = useState(data)
     const filteredData = {
         ...data,
@@ -25,13 +25,19 @@ export default function ChartDashboard({ title, data, options, filterOptions}) {
     return (
         <Flex
             flexDir={"row"}
-            flexGrow={1}>
+            flexGrow={1}
+            // left={"500px"}
+            alignItems="flex-start"
+            justifyContent="space-evenly"
+            // padding="0 50px"
+            >
                 <Select
+                margin="0 50px 0 0"
                 id="selectButton"
-                top={"10vh"}
-                left={"50px"}
+                // top={"10vh"}
                 flexGrow={0}
                 width="200px"
+                // h="100%"
                 onChange={() => {
                     const selectOptions = document.getElementById("selectButton").options
                     
@@ -52,8 +58,12 @@ export default function ChartDashboard({ title, data, options, filterOptions}) {
                     }
 
                 </Select>
+                {/* <Flex
+                    flexGrow={1}
+                    as="div"
+                ></Flex> */}
                 <LineChart 
-                    flexGrow={1} 
+                    
                     data={activeFilterOption == "all" ? data : filteredData} 
                     options={options} 
                     />
