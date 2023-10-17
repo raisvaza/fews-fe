@@ -70,7 +70,7 @@ const data = {
   ],
 };
 
-export default function LineChart({title}) {
+export default function LineChart({title, flexGrow}) {
     const options = {
         responsive: true,
         layout: {
@@ -102,12 +102,13 @@ export default function LineChart({title}) {
         <Flex
             flexDir="column"
             alignItems="center"
-            flexGrow={1}
+            flexGrow={flexGrow}
+            width={"50%"}
         >
-            <Flex
+            {/* <Flex
             width="100vh">
                 
-            </Flex>
+            </Flex> */}
             <Line options={options} data={data} />;
             
         </Flex>
