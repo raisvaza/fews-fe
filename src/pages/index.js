@@ -8,9 +8,85 @@ import Sidebar from '@/components/Sidebar'
 
 import { Flex } from '@chakra-ui/react'
 
+import LeafletMap from '@/components/LeafletMap'
+import ChartDashboard from '@/components/ChartDashboard'
+import Warning from '@/components/Warning'
+
+import { faker } from '@faker-js/faker'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  // Define the initial date and an array to store the generated dates
+  const startDate = new Date(); // Use the current date and time as the starting point
+  const dates = [];
+
+  // Generate 7 dates with a 15-minute difference
+  for (let i = 0; i < 7; i++) {
+  // Create a new date by adding 15 minutes (in milliseconds) to the previous date
+  const newDate = new Date(startDate.getTime() + i * 15 * 60 * 1000);
+  const year = newDate.getFullYear();
+  const month = String(newDate.getMonth() + 1).padStart(2, '0'); // Month is zero-based
+  const day = String(newDate.getDate()).padStart(2, '0');
+  const hour = String(newDate.getHours()).padStart(2, '0');
+  const minute = String(newDate.getMinutes()).padStart(2, '0');
+
+  const formattedDate = `${year}/${month}/${day} ${hour}:${minute}`;
+  dates.push(formattedDate);
+  }
+
+  const title = "Water Level"
+
+  const waterLevelData = [
+      {
+          label: 'Pos Duga Air A',
+          data: dates.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+          borderColor: 'rgb(255, 99, 132)',
+          // backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        },
+        {
+          label: 'Pos Duga Air B',
+          data: dates.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+          borderColor: 'rgb(53, 162, 235)',
+          backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        },
+  ]
+
+  const filterOptions = waterLevelData.map((item) => item.label)
+
+  const data = {
+      labels: dates,
+      datasets: waterLevelData,
+  };
+  
+  const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+          padding: {
+              left: 100,
+              right: 100,
+              top: 20,
+              bottom: 20
+          },
+          
+      },
+      scales: {
+          y: {
+              suggestedMin: 0,
+              suggestedMax: 1000
+          }
+      },
+      plugins: {
+          legend: {
+          position: 'top',
+          },
+          title: {
+          display: true,
+          text: title,
+          },
+      },
+  };
   return (
     <>
       <Head>
@@ -21,102 +97,31 @@ export default function Home() {
       </Head>
       {/* <main className={`${styles.main} ${inter.className}`}> */}
       <main className={`${inter.className}`}>
-        <Flex>
-          <Sidebar/>
-        </Flex>
-        {/* <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>src/pages/index.js</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
-
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-        </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
+        <Sidebar activeMenu={"prediction"}/>
+          <Flex flexDir="row" className={`${inter.className}`}
           >
-            <h2>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
+                    
+            <Flex
+            w={"250px"}
+            ></Flex>
+            
+            <Flex
+                flexDir="column"
+                flexGrow={1}
+                h="100vh"
+                padding="0 50px"
+                >
+                    
+                    <h1 style={{"padding": "20px 10px 0 0", "fontWeight": "bold", "fontSize": "30px"}}>Water Level Prediction</h1>
 
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
+                    <LeafletMap/>
 
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div> */}
+                    <ChartDashboard title={title} data={data} options={options} filterOptions={filterOptions}/>
+                    
+            </Flex>
+            <Warning/>
+          </Flex>
+        
       </main>
     </>
   )
