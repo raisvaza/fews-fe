@@ -35,9 +35,10 @@ export default function Warning() {
         <Flex
             pos="sticky"
             right="0"
-            h="100vh"
+            h="fit-content"
+            paddingBottom="10px"
             boxShadow="-5px -5px 12px 0 rgba(0, 0, 0, 0.1)"
-            w="400px"
+            w="15vw"
             flexDir="column"
             background="#ffffff"
             // justifyContent="space-between"
@@ -57,7 +58,7 @@ export default function Warning() {
                         <Text color="gray">Admin</Text>
                     </Flex>
                 </Flex> */}
-                <h1 style={{textAlign: "left", padding: "10px"}}>Early Warning</h1>
+                <h1  style={{textAlign: "left", padding: "10px",}}>Early Warning</h1>
                 <Divider display={navSize == "small" ? "none" : "flex"} />    
             </Flex>
             
@@ -70,12 +71,12 @@ export default function Warning() {
                 // as="nav"
             >
                 
-                <Card width="100%" backgroundColor="#49eb34" color="white">
+                <Card width="100%" backgroundColor="#49eb34" color="white" >
                     {/* <CardBody > */}
                         
-                        <Stack spacing='3'>
-                        <Flex as="div" alignItems="center" flexDir="column">
-                            <div style={{fontSize: "80px", height: "100px"}}>5</div>
+                        <Stack spacing='1'>
+                        <Flex as="div" alignItems="center" flexDir="column" >
+                            <div style={{fontSize: "80px", height: "min-content"}}>5</div>
                             <Heading size="lg" >Normal</Heading>
                         </Flex>
                         
