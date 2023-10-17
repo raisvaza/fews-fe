@@ -1,11 +1,16 @@
 import ChartDashboard from "@/components/ChartDashboard"
+import LeafletMap from '@/components/LeafletMap'
 import LineChart from "@/components/LineChart"
 // import Map from "@/components/Map"
 import Sidebar from "@/components/Sidebar"
+import Warning from "@/components/Warning"
 // import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
 import { Flex, Select } from "@chakra-ui/react"
 import { faker } from '@faker-js/faker'
 import { Inter } from 'next/font/google'
+import Head from "next/head"
+import { useEffect } from "react"
+// import LeafletMap from '@/components/LeafletMap/LeafletMap'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -56,6 +61,7 @@ export default function WaterLevel(){
     
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         layout: {
             padding: {
                 left: 100,
@@ -84,36 +90,50 @@ export default function WaterLevel(){
 
 
     return (
-        <Flex flexDir="row" className={`${inter.className}`}
-        >
-            <Sidebar/>
-            {/* <Flex flexDir="column">
-                <Select>
-                    <option>Pos Duga Air 1</option>
-                </Select>
-            </Flex> */}
-            <Flex
-                flexDir="column"
-                flexGrow={1}
+        <>
+            <Head>
+
+            </Head>
+            <main>
+                <Flex flexDir="row" className={`${inter.className}`}
                 >
-                    {/* <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
-                        <TileLayer
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        />
-                        <Marker position={[51.505, -0.09]}>
-                            <Popup>
-                            A pretty CSS3 popup. <br /> Easily customizable.
-                            </Popup>
-                        </Marker>
-                    </MapContainer> */}
-                    {/* <Map/> */}
-                    
-                    <ChartDashboard title={title} data={data} options={options} filterOptions={filterOptions}/>
-            </Flex>
-            
-            
-        </Flex>
+                    <Sidebar/>
+                    {/* <Flex flexDir="column">
+                        <Select>
+                            <option>Pos Duga Air 1</option>
+                        </Select>
+                    </Flex> */}
+                    <Flex
+                        flexDir="column"
+                        flexGrow={1}
+                        h="100vh"
+                        padding="0 50px"
+                        >
+                            {/* <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+                                <TileLayer
+                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                />
+                                <Marker position={[51.505, -0.09]}>
+                                    <Popup>
+                                    A pretty CSS3 popup. <br /> Easily customizable.
+                                    </Popup>
+                                </Marker>
+                            </MapContainer> */}
+                            {/* <Map/> */}
+                            {/* <LeafletMap/> */}
+                            <h1 style={{"padding": "20px 10px 0 0", "fontWeight": "bold", "fontSize": "30px"}}>Real-Time Water Level Observation</h1>
+
+                            <LeafletMap/>
+
+                            <ChartDashboard title={title} data={data} options={options} filterOptions={filterOptions}/>
+                            
+                    </Flex>
+                    <Warning/>
+                </Flex>
+            </main>
+        </>
+        
         
     )
 }
