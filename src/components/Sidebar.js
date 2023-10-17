@@ -23,11 +23,14 @@ import {
 import { useState } from 'react'
 import NavItem from './NavItem'
 
-export default function Sidebar() {
+export default function Sidebar({activeMenu}) {
     const [navSize, changeNavSize] = useState("large")
+
+    // const [activeMenu, changeActiveMenu] = useState(menu)
+
     return (
         <Flex
-            pos="sticky"
+            pos="fixed"
             left="0"
             h="100vh"
             boxShadow="5px 5px 12px 0 rgba(0, 0, 0, 0.1)"
@@ -73,13 +76,9 @@ export default function Sidebar() {
                             changeNavSize("small")
                     }}
                 /> */}
-                <NavItem navSize={navSize} icon={FiHome} title="Prediksi" description="This is the description for the dashboard." to="/"/>
-                <NavItem navSize={navSize} icon={FiCalendar} title="Pos Duga Air" to="/water-level" active={true}/>
-                <NavItem navSize={navSize} icon={FiUser} title="Pos Curah Hujan" to="rainfall" />
-                {/* <NavItem navSize={navSize} icon={IoPawOutline} title="Animals" /> */}
-                {/* <NavItem navSize={navSize} icon={FiDollarSign} title="Stocks" />
-                <NavItem navSize={navSize} icon={FiBriefcase} title="Reports" />
-                <NavItem navSize={navSize} icon={FiSettings} title="Settings" /> */}
+                <NavItem navSize={navSize} icon={FiHome} title="Prediksi" description="This is the description for the dashboard." to="/" active={activeMenu == "prediction" ? true : false}/>
+                <NavItem navSize={navSize} icon={FiCalendar} title="Pos Duga Air" to="/water-level" active={activeMenu == "waterLevel" ? true : false}/>
+                <NavItem navSize={navSize} icon={FiUser} title="Pos Curah Hujan" to="rainfall" active={activeMenu == "rainfall" ? true : false}/>
             </Flex>
 
             
