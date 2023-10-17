@@ -95,33 +95,21 @@ export default function WaterLevel(){
 
             </Head>
             <main>
+            <Sidebar activeMenu={"waterLevel"}/>
                 <Flex flexDir="row" className={`${inter.className}`}
                 >
-                    <Sidebar/>
-                    {/* <Flex flexDir="column">
-                        <Select>
-                            <option>Pos Duga Air 1</option>
-                        </Select>
-                    </Flex> */}
+                    
+                    <Flex
+                    w={"250px"}
+                    ></Flex>
+                    
                     <Flex
                         flexDir="column"
                         flexGrow={1}
                         h="100vh"
                         padding="0 50px"
                         >
-                            {/* <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
-                                <TileLayer
-                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                />
-                                <Marker position={[51.505, -0.09]}>
-                                    <Popup>
-                                    A pretty CSS3 popup. <br /> Easily customizable.
-                                    </Popup>
-                                </Marker>
-                            </MapContainer> */}
-                            {/* <Map/> */}
-                            {/* <LeafletMap/> */}
+                            
                             <h1 style={{"padding": "20px 10px 0 0", "fontWeight": "bold", "fontSize": "30px"}}>Real-Time Water Level Observation</h1>
 
                             <LeafletMap/>
