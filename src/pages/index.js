@@ -1,22 +1,58 @@
 import Head from 'next/head'
 import Image from 'next/image'
 
+import axios from 'axios'
+
 import { Inter } from 'next/font/google'
 // import styles from '@/styles/Home.module.css'
 
 import Sidebar from '@/components/Sidebar'
 
-import { Flex } from '@chakra-ui/react'
+import { Card, CardBody, Flex, Text } from '@chakra-ui/react'
 
 import LeafletMap from '@/components/LeafletMap'
 import ChartDashboard from '@/components/ChartDashboard'
 import Warning from '@/components/Warning'
 
+import GaugeComponent from '@/components/Gauge'
+
 import { faker } from '@faker-js/faker'
+import { useState, useEffect } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+// export async function getServerSideProps(context) {
+//   const response = await fetch('http://127.0.0.1:8000/get-pos/?format=json');
+//   const bedata = await response.json();
+//   console.log("INSIDE getServerSideProps" + bedata)
+
+//   return {
+//     props: {
+//       bedata,
+//     },
+//   };
+// }
+
+export default function Home({posData}) {
+  const [predict, setPredict] = useState(null);
+
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/get-latest-predict/?format=json') 
+      .then((response) => setPredict(response.data))
+      .catch((error) => console.error(error));
+    
+  },[])
+
+  useEffect(() => {
+    console.log("latest predict:", predict)
+  }, predict)
+
+  // console.log("POS DATA FROM APP", posData)
+
+  const PREDICT_PER_ROW = 4
+  
+  
+  // console.log("CLIENT SIDE:" + )
   // Define the initial date and an array to store the generated dates
   const startDate = new Date(); // Use the current date and time as the starting point
   const dates = [];
@@ -114,11 +150,49 @@ export default function Home() {
                     
                     <h1 style={{"padding": "20px 10px 0 0", "fontWeight": "bold", "fontSize": "30px"}}>Water Level Prediction</h1>
 
-                    <LeafletMap/>
+                    <LeafletMap posData={posData}/>
 
-                    <ChartDashboard title={title} data={data} options={options} filterOptions={filterOptions}/>
+                    <Flex flexDir="column">
+                      {
+                        predict && posData? predict
+                        .slice(0, Math.ceil(predict.length / PREDICT_PER_ROW))
+                        .map((rowItem, rowIndex) => 
+                          <Flex flexDir="row  " alignItems="flex-start" justifyContent="space-between" key={rowIndex} mt={"10px"}>{
+                            predict.slice(rowIndex * PREDICT_PER_ROW, (rowIndex + 1) * PREDICT_PER_ROW).map((predictItem, index) => 
+                              <GaugeComponent value={predictItem.predict_value} key={index} posName={
+                                posData.filter((posItem) => posItem.id == predictItem.pos_id)[0].nama}
+                              />)
+                          }</Flex>) : <></>
+                      }
+                      <Flex flexDir="row  " alignItems="flex-start" justifyContent="space-between">
+
+                        {/* {
+                          predict && posData ? predict.map((item, index) => {
+                            <GaugeComponent 
+                            value={item.predict_value} 
+                            posName={posData.filter((posItem) => posItem.id == item.pos_id)} />
+                          }) : <></>
+                        } */}
+
+                        {
+                          // predict && posData? predict.slice(0,4).map((predictItem, index) => <GaugeComponent value={predictItem.predict_value} posName={"ANJING"}/>) : "meh"
+                        }
+
+                        {/* <GaugeComponent value={"50"} posName={"Pos Duga Air A"}/>
+                        <GaugeComponent value={"50"} posName={"Pos Duga Air A"}/>
+                        <GaugeComponent value={"50"} posName={"Pos Duga Air A"}/>
+                        <GaugeComponent value={"50"} posName={"Pos Duga Air A"}/> */}
+                      
+                      </Flex>
+                      {/* <Flex flexDir="row" mt="10px">
+                        <GaugeComponent value={"50"} posName={"Pos Duga Air A"}/>
+                      </Flex> */}
+                    </Flex>
+
+                    {/* <ChartDashboard title={title} data={data} options={options} filterOptions={filterOptions}/> */}
                     
             </Flex>
+            {/* {} */}
             <Warning/>
           </Flex>
         
