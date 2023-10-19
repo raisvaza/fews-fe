@@ -5,58 +5,57 @@ import LineChart from "@/components/LineChart"
 import Sidebar from "@/components/Sidebar"
 import Warning from "@/components/Warning"
 // import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
-import { Flex, Select } from "@chakra-ui/react"
+import { Flex, Select, useStatStyles } from "@chakra-ui/react"
 import { faker } from '@faker-js/faker'
 import { Inter } from 'next/font/google'
 import Head from "next/head"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 // import LeafletMap from '@/components/LeafletMap/LeafletMap'
+import axios from "axios"
+import {utcToYMDHM} from "."
+
+const DATA_WINDOW = 7 //fetch from api
 
 const inter = Inter({ subsets: ['latin'] })
 
+// function getOnlyLatestDataFromEveryPos(data) {
+//     return data.map((item) => {item.readings[0]})
+// }
+
 export default function Rainfall({posData}){
-    
 
-    // Define the initial date and an array to store the generated dates
-    const startDate = new Date(); // Use the current date and time as the starting point
-    const dates = [];
+    const [rainfall, setRainfall] = useState([])
+    const [dates, setDates] = useState([])
+    const [latestRainfall, setLatestRainfall] = useState([])
 
-    // Generate 7 dates with a 15-minute difference
-    for (let i = 0; i < 7; i++) {
-    // Create a new date by adding 15 minutes (in milliseconds) to the previous date
-    const newDate = new Date(startDate.getTime() + i * 15 * 60 * 1000);
-    const year = newDate.getFullYear();
-    const month = String(newDate.getMonth() + 1).padStart(2, '0'); // Month is zero-based
-    const day = String(newDate.getDate()).padStart(2, '0');
-    const hour = String(newDate.getHours()).padStart(2, '0');
-    const minute = String(newDate.getMinutes()).padStart(2, '0');
+    useEffect(() => {
+        if (posData != null) {
+            axios.get("http://127.0.0.1:8000/get-reading/rainfall?format=json&limit=7")
+            .then((response) => { 
+                setDates(response.data[0].readings.map((readingItem) => { return utcToYMDHM(readingItem.reading_at)}))
+                setLatestRainfall(response.data.map((item) => {return item.readings[DATA_WINDOW-1]}))
+                setRainfall(response.data.map(
+                (rainfallItem) => {
+                    return { 
+                        label: posData.filter((posItem) => posItem.id == rainfallItem.pos_id)[0].nama,
+                        data: rainfallItem.readings.map((readingItem) => { return readingItem.reading_value}),
+                        borderColor: `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`
+                    }
+                }
+            ))})
+            .catch((error) => {console.error(error)})
+        }
+        
+    }, [posData])
 
-    const formattedDate = `${year}/${month}/${day} ${hour}:${minute}`;
-    dates.push(formattedDate);
-    }
 
     const title = "Curah Hujan"
 
-    const waterLevelData = [
-        {
-            label: 'Pos Curah Hujan A',
-            data: dates.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-            borderColor: 'rgb(255, 99, 132)',
-            // backgroundColor: 'rgba(255, 99, 132, 0.5)',
-          },
-          {
-            label: 'Pos Curah Hujan B',
-            data: dates.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-            borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-          },
-    ]
-
-    const filterOptions = waterLevelData.map((item) => item.label)
+    const filterOptions = rainfall.length != 0? rainfall.map((item) => item.label) : []
 
     const data = {
         labels: dates,
-        datasets: waterLevelData,
+        datasets: rainfall.length != 0? rainfall : [],
     };
     
     const options = {
@@ -117,7 +116,7 @@ export default function Rainfall({posData}){
                             <ChartDashboard title={title} data={data} options={options} filterOptions={filterOptions}/>
                             
                     </Flex>
-                    <Warning/>
+                    <Warning warningTitle={"Real-Time Rainfall Warning"} latestData={latestRainfall} posData={posData}/>
                 </Flex>
             </main>
         </>
