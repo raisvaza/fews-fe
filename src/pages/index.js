@@ -24,7 +24,6 @@ const inter = Inter({ subsets: ['latin'] })
 // export async function getServerSideProps(context) {
 //   const response = await fetch('http://127.0.0.1:8000/get-pos/?format=json');
 //   const bedata = await response.json();
-//   console.log("INSIDE getServerSideProps" + bedata)
 
 //   return {
 //     props: {
@@ -72,16 +71,12 @@ export default function Home({posData}) {
     
   },[])
 
-  useEffect(() => {
-    console.log("latest predict:", predict)
-  }, predict)
 
-  // console.log("POS DATA FROM APP", posData)
+
 
   const PREDICT_PER_ROW = 4
   
   
-  // console.log("CLIENT SIDE:" + )
   // Define the initial date and an array to store the generated dates
   const startDate = new Date(); // Use the current date and time as the starting point
   const dates = [];

@@ -20,8 +20,6 @@ export default function ChartDashboard({ title, data, options, filterOptions}) {
         
     // }, [activeFilterOption])
 
-    console.log("activeFilterOption:" + activeFilterOption)
-
     return (
         <Flex
             flexDir={"row"}
@@ -41,7 +39,6 @@ export default function ChartDashboard({ title, data, options, filterOptions}) {
                 onChange={() => {
                     const selectOptions = document.getElementById("selectButton").options
                     
-                    console.log(selectOptions[selectOptions.selectedIndex].value)
                     setActiveFilterOption(selectOptions[selectOptions.selectedIndex].value)
                 }}
                 >
