@@ -9,54 +9,47 @@ import { Flex, Select } from "@chakra-ui/react"
 import { faker } from '@faker-js/faker'
 import { Inter } from 'next/font/google'
 import Head from "next/head"
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
+import axios from "axios"
 // import LeafletMap from '@/components/LeafletMap/LeafletMap'
+import { utcToYMDHM } from "."
 
 const inter = Inter({ subsets: ['latin'] })
 
+const DATA_WINDOW = 7
+
 export default function WaterLevel({posData}){
-    
+    const [waterLevel, setWaterLevel] = useState([])
+    const [dates, setDates] = useState([])
+    const [latestWaterLevel, setLatestWaterLevel] = useState([])
 
-    // Define the initial date and an array to store the generated dates
-    const startDate = new Date(); // Use the current date and time as the starting point
-    const dates = [];
-
-    // Generate 7 dates with a 15-minute difference
-    for (let i = 0; i < 7; i++) {
-    // Create a new date by adding 15 minutes (in milliseconds) to the previous date
-    const newDate = new Date(startDate.getTime() + i * 15 * 60 * 1000);
-    const year = newDate.getFullYear();
-    const month = String(newDate.getMonth() + 1).padStart(2, '0'); // Month is zero-based
-    const day = String(newDate.getDate()).padStart(2, '0');
-    const hour = String(newDate.getHours()).padStart(2, '0');
-    const minute = String(newDate.getMinutes()).padStart(2, '0');
-
-    const formattedDate = `${year}/${month}/${day} ${hour}:${minute}`;
-    dates.push(formattedDate);
-    }
+    useEffect(() => {
+        if (posData != null) {
+            axios.get("http://127.0.0.1:8000/get-reading/water-level?format=json&limit=7")
+            .then((response) => { 
+                setDates(response.data[0].readings.map((readingItem) => { return utcToYMDHM(readingItem.reading_at)}))
+                setLatestWaterLevel(response.data.map((item) => {return item.readings[DATA_WINDOW-1]}))
+                setWaterLevel(response.data.map(
+                (waterLevelItem) => {
+                    return { 
+                        label: posData.filter((posItem) => posItem.id == waterLevelItem.pos_id)[0].nama,
+                        data: waterLevelItem.readings.map((readingItem) => { return readingItem.reading_value}),
+                        borderColor: `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`
+                    }
+                }
+            ))})
+            .catch((error) => {console.error(error)})
+        }
+        
+    }, [posData])
 
     const title = "Water Level"
 
-    const waterLevelData = [
-        {
-            label: 'Pos Duga Air A',
-            data: dates.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-            borderColor: 'rgb(255, 99, 132)',
-            // backgroundColor: 'rgba(255, 99, 132, 0.5)',
-          },
-          {
-            label: 'Pos Duga Air B',
-            data: dates.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-            borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-          },
-    ]
-
-    const filterOptions = waterLevelData.map((item) => item.label)
+    const filterOptions = waterLevel.length != 0? waterLevel.map((item) => item.label) : []
 
     const data = {
         labels: dates,
-        datasets: waterLevelData,
+        datasets: waterLevel.length != 0 ? waterLevel : [],
     };
     
     const options = {
@@ -117,7 +110,7 @@ export default function WaterLevel({posData}){
                             <ChartDashboard title={title} data={data} options={options} filterOptions={filterOptions}/>
                             
                     </Flex>
-                    <Warning/>
+                    <Warning warningTitle={"Real-Time Water Level Warning"} posData={posData} latestData={latestWaterLevel}/>
                 </Flex>
             </main>
         </>
