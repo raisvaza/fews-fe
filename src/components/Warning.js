@@ -26,11 +26,29 @@ import {
     AccordionPanel
  } from '@chakra-ui/react'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import NavItem from './NavItem'
 
-export default function Warning() {
+export default function Warning({warningTitle, posData, latestData}) {
     const [navSize, changeNavSize] = useState("large")
+    const [normalPos, setNormalPos] = useState([])
+    const [waspadaPos, setWaspadaPos] = useState([])
+    const [siagaPos, setSiagaPos] = useState([])
+    const [awasPos, setAwasPos] = useState([])
+    
+
+    // useEffect(() => {
+
+        // if (posData && latestData) {
+        //     const posDugaAir = posData.filter((item) => item.tipe == "DugaAir")
+        //     setNormalPos([latestData.filter((predict) => {predict.predict_value <= 250}).map((predict, index) => { return {...predict, pos_nama : posDugaAir.nama}})])
+        //     setWaspadaPos([latestData.filter((predict) => {predict.predict_value > 250 && predict.predict_value <= 500}).map((predict, index) => { return {...predict, pos_nama : posDugaAir.nama}})])
+        //     setNormalPos([latestData.filter((predict) => {predict.predict_value < 250}).map((predict, index) => { return {...predict, pos_nama : posDugaAir.nama}})])
+        //     setNormalPos([latestData.filter((predict) => {predict.predict_value < 250}).map((predict, index) => { return {...predict, pos_nama : posDugaAir.nama}})])
+        // }
+
+    // }, [posData, latestData])
+
     return (
         <Flex
             pos="sticky"
@@ -58,7 +76,7 @@ export default function Warning() {
                         <Text color="gray">Admin</Text>
                     </Flex>
                 </Flex> */}
-                <h1  style={{textAlign: "left", padding: "10px",}}>Early Warning</h1>
+                <h1  style={{textAlign: "left", padding: "10px",}}>{warningTitle}</h1>
                 <Divider display={navSize == "small" ? "none" : "flex"} />    
             </Flex>
             
@@ -76,7 +94,7 @@ export default function Warning() {
                         
                         <Stack spacing='1'>
                         <Flex as="div" alignItems="center" flexDir="column">
-                            <div style={{fontSize: "80px", height: "100px"}}>5</div>
+                            <div style={{fontSize: "80px", height: "100px"}}>{latestData ? latestData.filter((item) => (item.predict_value? item.predict_value : item.reading_value) < 250).length : 0}</div>
                             <Heading size="lg">Normal</Heading>
                         </Flex>
                         
@@ -84,13 +102,13 @@ export default function Warning() {
                             <AccordionItem borderColor="#49eb34">
                                 <AccordionButton>
                                     <Box as="span" flex='1' textAlign='left'>
-                                        <Text fontSize="14px">Daftar Pos Curah Hujan Normal</Text>
+                                        <Text fontSize="14px">Daftar Pos Duga Air Normal</Text>
                                     </Box>
                                     <AccordionIcon />
                                 </AccordionButton>
                                 <AccordionPanel pb={4} >
-                                    <div>a</div>
-                                    <div>a</div>
+                                    {/* {latestData ? latestData.filter((item) => item.predict_value > 250).map((item, index) => <Text>{latestData.pos_id_id}</Text>) : null} */}
+                                    { latestData && posData? latestData.filter((item) => (item.predict_value? item.predict_value : item.reading_value) < 250).map((item, index) => <Text fontSize={"13px"}>{ posData.filter((pos) => pos.id == item.pos_id)[0].nama }</Text>) : null}
                                 </AccordionPanel>
                             </AccordionItem>
                         </Accordion>
@@ -106,7 +124,7 @@ export default function Warning() {
                         
                         <Stack spacing='1'>
                         <Flex as="div" alignItems="center" flexDir="column">
-                            <div style={{fontSize: "80px", height: "100px"}}>5</div>
+                            <div style={{fontSize: "80px", height: "100px"}}>{latestData? latestData.filter((item) => (item.predict_value ? item.predict_value : item.reading_value) >= 250 && (item.predict_value? item.predict_value : item.reading_value) < 500).length : null}</div>
                             <Heading size="lg">Waspada</Heading>
                         </Flex>
                         
@@ -114,13 +132,12 @@ export default function Warning() {
                             <AccordionItem borderColor="#cacc2d">
                                 <AccordionButton>
                                     <Box as="span" flex='1' textAlign='left'>
-                                        <Text fontSize="14px">Daftar Pos Curah Hujan Waspada</Text>
+                                        <Text fontSize="14px">Daftar Pos Duga Air Waspada</Text>
                                     </Box>
                                     <AccordionIcon />
                                 </AccordionButton>
                                 <AccordionPanel pb={4} >
-                                    <div>a</div>
-                                    <div>a</div>
+                                { latestData && posData? latestData.filter((item) => (item.predict_value? item.predict_value : item.reading_value) >= 250 && (item.predict_value? item.predict_value : item.reading_value) < 500).map((item, index) => <Text fontSize={"13px"}>{ posData.filter((pos) => pos.id == item.pos_id)[0].nama }</Text>) : null}
                                 </AccordionPanel>
                             </AccordionItem>
                         </Accordion>
@@ -136,7 +153,7 @@ export default function Warning() {
                         
                         <Stack spacing='1'>
                         <Flex as="div" alignItems="center" flexDir="column">
-                            <div style={{fontSize: "80px", height: "100px"}}>5</div>
+                            <div style={{fontSize: "80px", height: "100px"}}>{latestData ? latestData.filter((item) => (item.predict_value? item.predict_value : item.reading_value) >= 500 && (item.predict_value? item.predict_value : item.reading_value) < 750).length : null}</div>
                             <Heading size="lg">Siaga</Heading>
                         </Flex>
                         
@@ -144,13 +161,12 @@ export default function Warning() {
                             <AccordionItem borderColor="#f7a025">
                                 <AccordionButton>
                                     <Box as="span" flex='1' textAlign='left'>
-                                    <Text fontSize="14px">Daftar Pos Curah Hujan Siaga</Text>
+                                    <Text fontSize="14px">Daftar Pos Duga Air Siaga</Text>
                                     </Box>
                                     <AccordionIcon />
                                 </AccordionButton>
                                 <AccordionPanel pb={4} >
-                                    <div>a</div>
-                                    <div>a</div>
+                                { latestData && posData? latestData.filter((item) => (item.predict_value? item.predict_value : item.reading_value) >= 500 && (item.predict_value? item.predict_value : item.reading_value) < 750).map((item, index) => <Text fontSize={"13px"}>{ posData.filter((pos) => pos.id == item.pos_id)[0].nama }</Text>) : null}
                                 </AccordionPanel>
                             </AccordionItem>
                         </Accordion>
@@ -166,7 +182,7 @@ export default function Warning() {
                         
                         <Stack spacing='3'>
                         <Flex as="div" alignItems="center" flexDir="column">
-                            <div style={{fontSize: "80px", height: "100px"}}>5</div>
+                            <div style={{fontSize: "80px", height: "100px"}}>{latestData? latestData.filter((item) => (item.predict_value? item.predict_value : item.reading_value) >= 750).length : null}</div>
                             <Heading size="lg">Awas</Heading>
                         </Flex>
                         
@@ -179,8 +195,7 @@ export default function Warning() {
                                     <AccordionIcon />
                                 </AccordionButton>
                                 <AccordionPanel pb={4} >
-                                    <div>a</div>
-                                    <div>a</div>
+                                { latestData && posData? latestData.filter((item) => (item.predict_value? item.predict_value : item.reading_value) >= 750).map((item, index) => <Text fontSize={"13px"}>{ posData.filter((pos) => pos.id == item.pos_id)[0].nama }</Text>) : null}
                                 </AccordionPanel>
                             </AccordionItem>
                         </Accordion>
