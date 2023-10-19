@@ -33,6 +33,35 @@ const inter = Inter({ subsets: ['latin'] })
 //   };
 // }
 
+export function utcToYMDHM(utcDate) {
+  const months = [
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember"
+  ]
+  const date = new Date(utcDate)
+  const minutes = date.getUTCMinutes();
+
+  const hours = date.getUTCHours();
+
+  const day = date.getUTCDate();
+
+  const month = date.getUTCMonth();
+
+  const year = date.getUTCFullYear();
+
+  return `${day} ${months[month]} ${year} ${hours}:${minutes}`
+}
+
 export default function Home({posData}) {
   const [predict, setPredict] = useState(null);
 
@@ -152,12 +181,21 @@ export default function Home({posData}) {
 
                     <LeafletMap posData={posData}/>
 
+                    <Text>Prediksi untuk pukul <span style={{"fontWeight": "bold"}}>{predict? 
+                      utcToYMDHM(predict[0].predict_for)
+                      : null}
+                      </span>
+                    </Text>
+                    <Text fontSize={"12px"}>
+                      Prediksi dilakukan setiap 15 menit
+                    </Text>
+
                     <Flex flexDir="column">
                       {
                         predict && posData? predict
                         .slice(0, Math.ceil(predict.length / PREDICT_PER_ROW))
                         .map((rowItem, rowIndex) => 
-                          <Flex flexDir="row  " alignItems="flex-start" justifyContent="space-between" key={rowIndex} mt={"10px"}>{
+                          <Flex flexDir="row  " alignItems="flex-start" justifyContent="space-between" key={rowIndex} mt={"20px"}>{
                             predict.slice(rowIndex * PREDICT_PER_ROW, (rowIndex + 1) * PREDICT_PER_ROW).map((predictItem, index) => 
                               <GaugeComponent value={predictItem.predict_value} key={index} posName={
                                 posData.filter((posItem) => posItem.id == predictItem.pos_id)[0].nama}
@@ -193,7 +231,7 @@ export default function Home({posData}) {
                     
             </Flex>
             {/* {} */}
-            <Warning/>
+            <Warning warningTitle="Early Warning" posData={posData? posData : null} latestData={predict? predict : null}/>
           </Flex>
         
       </main>
