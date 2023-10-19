@@ -14,7 +14,7 @@ import { useEffect } from "react"
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Rainfall(){
+export default function Rainfall({posData}){
     
 
     // Define the initial date and an array to store the generated dates
@@ -112,7 +112,7 @@ export default function Rainfall(){
                             
                             <h1 style={{"padding": "20px 10px 0 0", "fontWeight": "bold", "fontSize": "30px"}}>Real-Time Rainfall Observation</h1>
 
-                            <LeafletMap/>
+                            <LeafletMap posData={posData}/>
 
                             <ChartDashboard title={title} data={data} options={options} filterOptions={filterOptions}/>
                             
