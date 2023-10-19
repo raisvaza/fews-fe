@@ -35,7 +35,7 @@ export default function Warning() {
         <Flex
             pos="sticky"
             right="0"
-            h="fit-content"
+            minH="100vh"
             paddingBottom="10px"
             boxShadow="-5px -5px 12px 0 rgba(0, 0, 0, 0.1)"
             w="15vw"
@@ -71,30 +71,30 @@ export default function Warning() {
                 // as="nav"
             >
                 
-                <Card width="100%" backgroundColor="#49eb34" color="white" >
+                <Card width="100%" mt="3" backgroundColor="#49eb34" color="white" >
                     {/* <CardBody > */}
                         
                         <Stack spacing='1'>
-                        <Flex as="div" alignItems="center" flexDir="column" >
-                            <div style={{fontSize: "80px", height: "min-content"}}>5</div>
-                            <Heading size="lg" >Normal</Heading>
+                        <Flex as="div" alignItems="center" flexDir="column">
+                            <div style={{fontSize: "80px", height: "100px"}}>5</div>
+                            <Heading size="lg">Normal</Heading>
                         </Flex>
                         
                         <Accordion allowMultiple>
                             <AccordionItem borderColor="#49eb34">
                                 <AccordionButton>
                                     <Box as="span" flex='1' textAlign='left'>
-                                    Daftar Pos Curah Hujan Normal
+                                        <Text fontSize="14px">Daftar Pos Curah Hujan Normal</Text>
                                     </Box>
                                     <AccordionIcon />
                                 </AccordionButton>
-                                <AccordionPanel pb={4}>
+                                <AccordionPanel pb={4} >
                                     <div>a</div>
                                     <div>a</div>
                                 </AccordionPanel>
                             </AccordionItem>
                         </Accordion>
-                        <div style={{height: "1px"}}></div>
+                        <div style={{height: "3px"}}></div>
                     
                         </Stack>
                     {/* </CardBody> */}
@@ -104,17 +104,17 @@ export default function Warning() {
                 <Card width="100%" mt="3" backgroundColor="#cacc2d" color="white" >
                     {/* <CardBody > */}
                         
-                        <Stack spacing='3'>
+                        <Stack spacing='1'>
                         <Flex as="div" alignItems="center" flexDir="column">
                             <div style={{fontSize: "80px", height: "100px"}}>5</div>
                             <Heading size="lg">Waspada</Heading>
                         </Flex>
                         
                         <Accordion allowMultiple>
-                            <AccordionItem borderColor="#cacc2d" defaultIsOpen={false}>
+                            <AccordionItem borderColor="#cacc2d">
                                 <AccordionButton>
                                     <Box as="span" flex='1' textAlign='left'>
-                                    Daftar Pos Curah Hujan Waspada
+                                        <Text fontSize="14px">Daftar Pos Curah Hujan Waspada</Text>
                                     </Box>
                                     <AccordionIcon />
                                 </AccordionButton>
@@ -134,7 +134,7 @@ export default function Warning() {
                 <Card width="100%" mt="3" backgroundColor="#f7a025" color="white" >
                     {/* <CardBody > */}
                         
-                        <Stack spacing='3'>
+                        <Stack spacing='1'>
                         <Flex as="div" alignItems="center" flexDir="column">
                             <div style={{fontSize: "80px", height: "100px"}}>5</div>
                             <Heading size="lg">Siaga</Heading>
@@ -144,7 +144,7 @@ export default function Warning() {
                             <AccordionItem borderColor="#f7a025">
                                 <AccordionButton>
                                     <Box as="span" flex='1' textAlign='left'>
-                                    Daftar Pos Curah Hujan Siaga
+                                    <Text fontSize="14px">Daftar Pos Curah Hujan Siaga</Text>
                                     </Box>
                                     <AccordionIcon />
                                 </AccordionButton>
@@ -174,7 +174,7 @@ export default function Warning() {
                             <AccordionItem borderColor="#f72525">
                                 <AccordionButton>
                                     <Box as="span" flex='1' textAlign='left'>
-                                    Daftar Pos Curah Hujan Awas
+                                        <Text fontSize="14px">Daftar Pos Curah Hujan Awas</Text>
                                     </Box>
                                     <AccordionIcon />
                                 </AccordionButton>
