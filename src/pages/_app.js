@@ -6,6 +6,7 @@ import '@/styles/globals.css'
 
 export default function App({ Component, pageProps }) {
   const [pos, setPos] = useState(null);
+  // const [activeNav, setActiveNav] = useState("");
 
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/get-pos/?format=json') 
@@ -15,8 +16,8 @@ export default function App({ Component, pageProps }) {
   },[])
 
   // useEffect(() => {
-  //   console.log("IN APP:", pos)
-  // }, pos)
+  //   console.log(activeNav)
+  // }, [activeNav])
 
   return (
     <ChakraProvider>

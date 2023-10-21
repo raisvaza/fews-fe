@@ -47,6 +47,7 @@ export function utcToYMDHM(utcDate) {
     "November",
     "Desember"
   ]
+  console.log(utcDate)
   const date = new Date(utcDate)
   const minutes = date.getUTCMinutes();
 
@@ -61,7 +62,7 @@ export function utcToYMDHM(utcDate) {
   return `${day} ${months[month]} ${year} ${hours}:${minutes}`
 }
 
-export default function Home({posData}) {
+export default function Home({posData, setActiveNav}) {
   const [predict, setPredict] = useState(null);
 
   useEffect(() => {
@@ -157,13 +158,14 @@ export default function Home({posData}) {
       </Head>
       {/* <main className={`${styles.main} ${inter.className}`}> */}
       <main className={`${inter.className}`}>
-        <Sidebar activeMenu={"prediction"}/>
+      
           <Flex flexDir="row" className={`${inter.className}`}
           >
+            <Sidebar activeMenu={"prediction"} posData={posData} setActiveNav={setActiveNav}/>
                     
-            <Flex
+            {/* <Flex
             w={"250px"}
-            ></Flex>
+            ></Flex> */}
             
             <Flex
                 flexDir="column"

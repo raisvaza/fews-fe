@@ -2,14 +2,18 @@ import { Flex, Select, filter } from "@chakra-ui/react"
 import LineChart from "./LineChart"
 import { useEffect, useState } from "react"
 
-export default function ChartDashboard({ title, data, options, filterOptions}) {
+export default function ChartDashboard({ title, data, options, filterOptions, activeData}) {
 
     const [activeFilterOption, setActiveFilterOption] = useState("all");
     // const [filteredData, setFilteredData] = useState(data)
     const filteredData = {
         ...data,
-        datasets: data.datasets.filter((item) => item.label == activeFilterOption)
+        datasets: data.datasets.filter((item) => item.label == (activeFilterOption))
     } 
+
+    useEffect(() => {
+
+    }, activeData)
 
     // if (activeFilterOption !== "") {
 
@@ -29,7 +33,7 @@ export default function ChartDashboard({ title, data, options, filterOptions}) {
             justifyContent="space-evenly"
             // padding="0 50px"
             >
-                <Select
+                { activeData? null : <Select
                 margin="0 50px 0 0"
                 id="selectButton"
                 // top={"10vh"}
@@ -54,14 +58,15 @@ export default function ChartDashboard({ title, data, options, filterOptions}) {
                         )
                     }
 
-                </Select>
+                </Select>}
+                
                 {/* <Flex
                     flexGrow={1}
                     as="div"
                 ></Flex> */}
                 <LineChart 
                     
-                    data={activeFilterOption == "all" ? data : filteredData} 
+                    data={ activeFilterOption == "all" ? data : filteredData} 
                     options={options} 
                     />
             </Flex>

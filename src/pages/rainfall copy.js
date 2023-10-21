@@ -94,7 +94,7 @@ export default function Rainfall({posData}){
 
             </Head>
             <main>
-            <Sidebar posData={posData} activeMenu={"rainfall"} />
+            <Sidebar activeMenu={"rainfall"}/>
                 <Flex flexDir="row" className={`${inter.className}`}
                 >
                     

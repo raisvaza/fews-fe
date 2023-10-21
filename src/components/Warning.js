@@ -98,20 +98,20 @@ export default function Warning({warningTitle, posData, latestData}) {
                             <Heading size="lg">Normal</Heading>
                         </Flex>
                         
-                        <Accordion allowMultiple>
-                            <AccordionItem borderColor="#49eb34">
-                                <AccordionButton>
-                                    <Box as="span" flex='1' textAlign='left'>
-                                        <Text fontSize="14px">Daftar Pos Duga Air Normal</Text>
-                                    </Box>
-                                    <AccordionIcon />
-                                </AccordionButton>
-                                <AccordionPanel pb={4} >
-                                    {/* {latestData ? latestData.filter((item) => item.predict_value > 250).map((item, index) => <Text>{latestData.pos_id_id}</Text>) : null} */}
-                                    { latestData && posData? latestData.filter((item) => (item.predict_value? item.predict_value : item.reading_value) < 250).map((item, index) => <Text fontSize={"13px"}>{ posData.filter((pos) => pos.id == item.pos_id)[0].nama }</Text>) : null}
-                                </AccordionPanel>
-                            </AccordionItem>
-                        </Accordion>
+                            <Accordion allowMultiple>
+                                <AccordionItem borderColor="#49eb34">
+                                    <AccordionButton>
+                                        <Box as="span" flex='1' textAlign='left'>
+                                            <Text fontSize="14px">Daftar Pos Duga Air Normal</Text>
+                                        </Box>
+                                        <AccordionIcon />
+                                    </AccordionButton>
+                                    <AccordionPanel pb={4} >
+                                        {/* {latestData ? latestData.filter((item) => item.predict_value > 250).map((item, index) => <Text>{latestData.pos_id_id}</Text>) : null} */}
+                                        { latestData && posData? latestData.filter((item) => (item.predict_value? item.predict_value : item.reading_value) < 250).map((item, index) => <Text fontSize={"13px"}>{ posData.filter((pos) => pos.id == item.pos_id)[0].nama }</Text>) : null}
+                                    </AccordionPanel>
+                                </AccordionItem>
+                            </Accordion>
                         <div style={{height: "3px"}}></div>
                     
                         </Stack>

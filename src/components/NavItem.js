@@ -5,7 +5,7 @@ export default function NavItem({navSize, title, icon, active, to}) {
 
     return (
         <Flex
-            mt={30}
+            mt={0}
             flexDir="column"
             w="100%"
             alignItems={navSize == "small" ? "center" : "flex-start"}
@@ -14,7 +14,7 @@ export default function NavItem({navSize, title, icon, active, to}) {
                 <Link
                     backgroundColor={active && "#AEC8CA"}
                     p={3}
-                    borderRadius={8}
+                    borderRadius={0}
                     _hover={{ textDecor: 'none', backgroundColor: "#AEC8CA" }}
                     w={navSize == "large" && "100%"}
                     href={to}

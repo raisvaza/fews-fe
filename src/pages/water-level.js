@@ -18,10 +18,12 @@ const inter = Inter({ subsets: ['latin'] })
 
 const DATA_WINDOW = 7
 
-export default function WaterLevel({posData}){
+export default function WaterLevel({posData, activeNav, setActiveNav}){
     const [waterLevel, setWaterLevel] = useState([])
     const [dates, setDates] = useState([])
     const [latestWaterLevel, setLatestWaterLevel] = useState([])
+    const [activeWaterLevel, setActiveWaterLevel] = useState("all")
+
 
     useEffect(() => {
         if (posData != null) {
@@ -42,6 +44,10 @@ export default function WaterLevel({posData}){
         }
         
     }, [posData])
+
+    useEffect(() => {
+        console.log(activeWaterLevel)
+    }, [activeWaterLevel])
 
     const title = "Water Level"
 
@@ -88,13 +94,14 @@ export default function WaterLevel({posData}){
 
             </Head>
             <main>
-            <Sidebar activeMenu={"waterLevel"}/>
+            
                 <Flex flexDir="row" className={`${inter.className}`}
                 >
+                    <Sidebar posData={posData} activeMenu={"waterLevel"} setActiveSubMenu={setActiveWaterLevel} activeSubMenu={activeWaterLevel}/>
                     
-                    <Flex
+                    {/* <Flex
                     w={"250px"}
-                    ></Flex>
+                    ></Flex> */}
                     
                     <Flex
                         flexDir="column"
@@ -103,11 +110,11 @@ export default function WaterLevel({posData}){
                         padding="0 50px"
                         >
                             
-                            <h1 style={{"padding": "20px 10px 0 0", "fontWeight": "bold", "fontSize": "30px"}}>Real-Time Water Level Observation</h1>
+                            <h1 style={{"padding": "20px 10px 0 0", "fontWeight": "bold", "fontSize": "30px", "color": "#1a202c"}}>Real-Time Water Level Observation</h1>
 
                             <LeafletMap posData={posData}/>
 
-                            <ChartDashboard title={title} data={data} options={options} filterOptions={filterOptions}/>
+                            <ChartDashboard title={title} data={data} options={options} filterOptions={filterOptions} activeData={activeWaterLevel}/>
                             
                     </Flex>
                     <Warning warningTitle={"Real-Time Water Level Warning"} posData={posData} latestData={latestWaterLevel}/>
